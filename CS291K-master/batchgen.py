@@ -6,19 +6,18 @@ import numpy as np
 from IPython import embed
 
 #Separates a file with mixed positive and negative examples into two.
-def separate_dataset(filename):
-    good_out = open("good_"+filename,"w+");
-    bad_out  = open("bad_"+filename,"w+");
+def separate_dataset(path, filename):
+    good_out = open(path + "good_tweets.csv", "w+")
+    bad_out  = open(path + "bad_tweets.csv", "w+")
 
-    seen = 1;
-    with open(filename,'r') as f:
+    seen = 1
+    with open(path + filename, 'r') as f:
         reader = csv.reader(f)
-        reader.next()
 
         for line in reader:
-            seen +=1
-            sentiment = line[1]
-            sentence = line[3]
+            seen += 1
+            sentiment = line[0]
+            sentence = line[-1]
 
             if (sentiment == "0"):
                 bad_out.write(sentence+"\n")

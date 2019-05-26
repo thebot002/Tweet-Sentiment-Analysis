@@ -51,11 +51,15 @@ log_device_placement = False
 # Data Preparation
 # ==================================================
 
+path = "../Data/"
+filename = "tweets.csv"
+goodfile = path + "good_tweets.csv"
+badfile = path + "bad_tweets.csv"
 
-filename = "../Data/tweets.csv"
-goodfile = "../Data/tweets_4.csv"
-badfile = "../Data/tweets_0.csv"
-
+if not os.path.isfile(goodfile):
+    print('Splitting the data...')
+    batchgen.separate_dataset(path, filename)
+    print('Good and bad files created')
 
 # Load data
 print("Loading data...")
@@ -74,7 +78,7 @@ else:
     def loadGloVe(filename):
         vocab = []
         embd = []
-        file = open(filename,'r')
+        file = open(filename, 'r', encoding="utf8")
         for line in file.readlines():
             row = line.strip().split(' ')
             vocab.append(row[0])
@@ -244,4 +248,4 @@ with tf.Graph().as_default():
             if current_step % checkpoint_every == 0:
                 path = saver.save(sess, checkpoint_prefix, global_step=current_step)
                 print("Saved model checkpoint to {}\n".format(path))
-        dev_step(x_dev, y_dev, writer=dev_summary_writer)
+        dev_step(x_dev, y_dev, writer=dev_summary_writer, save=True)
