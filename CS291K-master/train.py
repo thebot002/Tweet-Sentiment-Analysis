@@ -52,9 +52,9 @@ log_device_placement = False
 # ==================================================
 
 
-filename = "../tweets.csv"
-goodfile = "../good_tweets.csv"
-badfile = "../bad_tweets.csv"
+filename = "../Data/tweets.csv"
+goodfile = "../Data/tweets_4.csv"
+badfile = "../Data/tweets_0.csv"
 
 
 # Load data
@@ -70,7 +70,7 @@ if (not use_glove):
 else:
     print("Using GloVe")
     embedding_dim = 50
-    filename = '../glove.6B.50d.txt'
+    filename = '../Data/glove.6B.50d.txt'
     def loadGloVe(filename):
         vocab = []
         embd = []
