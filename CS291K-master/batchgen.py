@@ -5,10 +5,12 @@ import numpy as np
 
 from IPython import embed
 
-#Separates a file with mixed positive and negative examples into two.
+# Separates a file with mixed positive and negative examples into two.
+
+
 def separate_dataset(path, filename):
     good_out = open(path + "good_tweets.csv", "w+")
-    bad_out  = open(path + "bad_tweets.csv", "w+")
+    bad_out = open(path + "bad_tweets.csv", "w+")
 
     seen = 1
     with open(path + filename, 'r') as f:
@@ -24,21 +26,20 @@ def separate_dataset(path, filename):
             else:
                 good_out.write(sentence+"\n")
 
-            if (seen%10000==0):
+            if (seen % 10000 == 0):
                 print(seen)
 
     good_out.close()
     bad_out.close()
 
 
-
-#Load Dataset
-def get_dataset(goodfile,badfile,limit,randomize=True):
-    good_x = list(open(goodfile,"r").readlines())
+# Load Dataset
+def get_dataset(goodfile, badfile, limit, randomize=True):
+    good_x = list(open(goodfile, "r", encoding="ISO-8859-1").readlines())
     good_x = [s.strip() for s in good_x]
-    
-    bad_x  = list(open(badfile,"r").readlines())
-    bad_x  = [s.strip() for s in bad_x]
+
+    bad_x = list(open(badfile, "r", encoding="ISO-8859-1").readlines())
+    bad_x = [s.strip() for s in bad_x]
 
     if (randomize):
         random.shuffle(bad_x)
@@ -50,44 +51,40 @@ def get_dataset(goodfile,badfile,limit,randomize=True):
     x = good_x + bad_x
     x = [clean_str(s) for s in x]
 
-
     positive_labels = [[0, 1] for _ in good_x]
     negative_labels = [[1, 0] for _ in bad_x]
     y = np.concatenate([positive_labels, negative_labels], 0)
-    return [x,y]
+    return [x, y]
 
 
-
-
-#Clean Dataset
+# Clean Dataset
 def clean_str(string):
 
+    # EMOJIS
+    string = re.sub(r":\)", "emojihappy1", string)
+    string = re.sub(r":P", "emojihappy2", string)
+    string = re.sub(r":p", "emojihappy3", string)
+    string = re.sub(r":>", "emojihappy4", string)
+    string = re.sub(r":3", "emojihappy5", string)
+    string = re.sub(r":D", "emojihappy6", string)
+    string = re.sub(r" XD ", "emojihappy7", string)
+    string = re.sub(r" <3 ", "emojihappy8", string)
 
-    #EMOJIS
-    string = re.sub(r":\)","emojihappy1",string)
-    string = re.sub(r":P","emojihappy2",string)
-    string = re.sub(r":p","emojihappy3",string)
-    string = re.sub(r":>","emojihappy4",string)
-    string = re.sub(r":3","emojihappy5",string)
-    string = re.sub(r":D","emojihappy6",string)
-    string = re.sub(r" XD ","emojihappy7",string)
-    string = re.sub(r" <3 ","emojihappy8",string)
+    string = re.sub(r":\(", "emojisad9", string)
+    string = re.sub(r":<", "emojisad10", string)
+    string = re.sub(r":<", "emojisad11", string)
+    string = re.sub(r">:\(", "emojisad12", string)
 
-    string = re.sub(r":\(","emojisad9",string)
-    string = re.sub(r":<","emojisad10",string)
-    string = re.sub(r":<","emojisad11",string)
-    string = re.sub(r">:\(","emojisad12",string)
+    # MENTIONS "(@)\w+"
+    string = re.sub(r"(@)\w+", "mentiontoken", string)
 
-    #MENTIONS "(@)\w+"
-    string = re.sub(r"(@)\w+","mentiontoken",string)
-    
-    #WEBSITES
-    string = re.sub(r"http(s)*:(\S)*","linktoken",string)
+    # WEBSITES
+    string = re.sub(r"http(s)*:(\S)*", "linktoken", string)
 
-    #STRANGE UNICODE \x...
-    string = re.sub(r"\\x(\S)*","",string)
+    # STRANGE UNICODE \x...
+    string = re.sub(r"\\x(\S)*", "", string)
 
-    #General Cleanup and Symbols
+    # General Cleanup and Symbols
     string = re.sub(r"[^A-Za-z0-9(),!?\'\`]", " ", string)
     string = re.sub(r"\'s", " \'s", string)
     string = re.sub(r"\'ve", " \'ve", string)
@@ -105,9 +102,8 @@ def clean_str(string):
     return string.strip().lower()
 
 
-
-#Generate random batches
-#Source: https://github.com/dennybritz/cnn-text-classification-tf/blob/master/data_helpers.py
+# Generate random batches
+# Source: https://github.com/dennybritz/cnn-text-classification-tf/blob/master/data_helpers.py
 def gen_batch(data, batch_size, num_epochs, shuffle=True):
     """
     Generates a batch iterator for a dataset.
@@ -127,9 +123,10 @@ def gen_batch(data, batch_size, num_epochs, shuffle=True):
             end_index = min((batch_num + 1) * batch_size, data_size)
             yield shuffled_data[start_index:end_index]
 
+
 if __name__ == "__main__":
-    separate_dataset("small.txt");
+    separate_dataset("small.txt")
 
 
-#42
-#642
+# 42
+# 642

@@ -1,11 +1,12 @@
 import csv
 import re
+from nltk.corpus import stopwords
 
 
 # To separate our file of tweets in two different files
 def split(path, file_name):
     good_out = open(path + "good_tweets.csv", "w+")
-    bad_out  = open(path + "bad_tweets.csv", "w+")
+    bad_out = open(path + "bad_tweets.csv", "w+")
 
     seen = 1
     with open(path + file_name, 'r') as f:
@@ -22,7 +23,7 @@ def split(path, file_name):
             else:
                 good_out.write(sentence+"\n")
 
-            if (seen%10000==0):
+            if (seen % 10000 == 0):
                 print(seen)
 
     good_out.close()
@@ -68,6 +69,10 @@ def preprocess(string):
     string = re.sub(r"\)", " \) ", string)
     string = re.sub(r"\?", " \? ", string)
     string = re.sub(r"\s{2,}", " ", string)
+
+    stop_words = set(stopwords.words('english'))
+    for w in stop_words:
+        string = re.sub((" "+w+" "), " ", string)
 
     return string.strip().lower()
 
