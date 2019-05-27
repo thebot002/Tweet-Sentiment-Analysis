@@ -1,7 +1,8 @@
 import csv
 import re
 from nltk.corpus import stopwords
-
+import tqdm
+import pickle
 
 # To separate our file of tweets in two different files
 def split(path, file_name):
@@ -79,7 +80,37 @@ def preprocess(string):
 
 def tokenize(filename):
     dataset = []
+    print(filename + ':')
     with open(filename) as file:
-        for line in file:
+        lines = file.readlines()
+        t = tqdm.tqdm(total=len(lines))
+        for line in lines:
+            t.update()
             dataset.append(preprocess(line).split())
+        t.close()
     return dataset
+
+
+def read_preprocessed(filename):
+    with open('../Data/'+filename+'.pkl', 'rb') as file:
+        return pickle.load(file)
+
+
+def main():
+    good_file = 'Data/good_tweets.csv'
+    bad_file = 'Data/bad_tweets.csv'
+
+    good_tweets = tokenize(good_file)
+    bad_tweets = tokenize(bad_file)
+
+    good_out = 'Data/good_tweets.pkl'
+    bad_out = 'Data/bad_tweets.pkl'
+
+    with open(good_out, 'wb') as out:
+        pickle.dump(good_tweets, out, pickle.HIGHEST_PROTOCOL)
+
+    with open(bad_out, 'wb') as out:
+        pickle.dump(bad_tweets, out, pickle.HIGHEST_PROTOCOL)
+
+if __name__ == '__main__':
+    main()

@@ -84,9 +84,5 @@ class CNN_LSTM(object):
             self.accuracy = tf.reduce_mean(
                 tf.cast(self.correct_pred, "float"), name="accuracy")
 
-        with tf.name_scope("precision"):
-            self.precision = tf.metrics.precision(
-                labels=self.input_y, predictions=self.predictions)
-
         print("(!) LOADED CNN-LSTM! :)")
         # embed()

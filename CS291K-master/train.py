@@ -227,11 +227,11 @@ with tf.Graph().as_default():
             sess.run(tf.local_variables_initializer())
             _, step, summaries, loss, accuracy, precision = sess.run(
                 [train_op, global_step, train_summary_op,
-                    model.loss, model.accuracy, model.precision],
+                    model.loss, model.accuracy],
                 feed_dict)
             time_str = datetime.datetime.now().isoformat()
-            print("{}: step {}, loss {:g}, acc {:g}, pre {:g}".format(
-                time_str, step, loss, accuracy, precision))
+            print("{}: step {}, loss {:g}, acc {:g}".format(
+                time_str, step, loss, accuracy))
             if save:
                 train_summary_writer.add_summary(summaries, step)
 

@@ -10,16 +10,36 @@ bad_tweets = tokenize(data_path + 'bad_tweets.csv')
 
 [good_train, good_test, bad_train, bad_test] = train_test_split(good_tweets, bad_tweets)
 
+n = 1
+# coef = 1
 print('Creation of the models...')
-good_model = CustomLanguageModel(good_train)
-bad_model = CustomLanguageModel(bad_train)
+good_model = CustomLanguageModel(good_train, n=n, coef=1)
+bad_model = CustomLanguageModel(bad_train, n=n, coef=1)
 
 print('Evaluation of the models...')
 true = 0
 for i in range(len(good_test)):
+    print(str(i) + '/' + str(len(good_test)))
     if good_model.score(good_test[i]) > bad_model.score(good_test[i]):
         true += 1
     if good_model.score(bad_test[i]) < bad_model.score(bad_test[i]):
         true += 1
 
-print('accuracy: ' + str(true / (len(good_test) * 2)))
+print('accuracy ' + str(n) + '-gram, coef=1: ' + str(true / (len(good_test) * 2)))
+
+#################################################
+# coef = 0.4
+print('Creation of the models...')
+good_model = CustomLanguageModel(good_train, n=n, coef=0.4)
+bad_model = CustomLanguageModel(bad_train, n=n, coef=0.4)
+
+print('Evaluation of the models...')
+true = 0
+for i in range(len(good_test)):
+    print(str(i) + '/' + str(len(good_test)))
+    if good_model.score(good_test[i]) > bad_model.score(good_test[i]):
+        true += 1
+    if good_model.score(bad_test[i]) < bad_model.score(bad_test[i]):
+        true += 1
+
+print('accuracy ' + str(n) + '-gram, coef=0.4: ' + str(true / (len(good_test) * 2)))
