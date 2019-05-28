@@ -225,9 +225,8 @@ with tf.Graph().as_default():
                 model.dropout_keep_prob: dropout_prob
             }
             sess.run(tf.local_variables_initializer())
-            _, step, summaries, loss, accuracy, precision = sess.run(
-                [train_op, global_step, train_summary_op,
-                    model.loss, model.accuracy],
+            _, step, summaries, loss, accuracy = sess.run(
+                [train_op, global_step, train_summary_op, model.loss, model.accuracy],
                 feed_dict)
             time_str = datetime.datetime.now().isoformat()
             print("{}: step {}, loss {:g}, acc {:g}".format(

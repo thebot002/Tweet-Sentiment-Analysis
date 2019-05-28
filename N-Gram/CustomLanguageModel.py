@@ -1,5 +1,5 @@
 import math, collections
-
+import tqdm
 
 class CustomLanguageModel:
 
@@ -17,7 +17,9 @@ class CustomLanguageModel:
         """ Takes a corpus and trains your language model.
             Compute any counts or other corpus statistics in this function.
         """
+        t = tqdm.tqdm(total=len(corpus))
         for sentence in corpus:
+            t.update()
             for i in range(0, len(sentence)):
                 self.total += 1
                 tup = []
@@ -26,6 +28,7 @@ class CustomLanguageModel:
                     tup.insert(0, word)
 
                     self.counts[l][tuple(tup)] += 1
+        t.close()
         pass
 
     def score(self, sentence):

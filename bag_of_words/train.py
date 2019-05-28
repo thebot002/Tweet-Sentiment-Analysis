@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from bag_of_words import bow
 from tqdm import tqdm
 
-use_preprocessed = True
+use_preprocessed = False
 
 if not use_preprocessed:
     print('Processing the data...')

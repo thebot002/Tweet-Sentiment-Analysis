@@ -4,6 +4,7 @@ from nltk.corpus import stopwords
 import tqdm
 import pickle
 
+
 # To separate our file of tweets in two different files
 def split(path, file_name):
     good_out = open(path + "good_tweets.csv", "w+")
@@ -20,9 +21,9 @@ def split(path, file_name):
             sentence = line[-1]
 
             if (sentiment == "0"):
-                bad_out.write(sentence+"\n")
+                bad_out.write(sentence + "\n")
             else:
-                good_out.write(sentence+"\n")
+                good_out.write(sentence + "\n")
 
             if (seen % 10000 == 0):
                 print(seen)
@@ -33,19 +34,19 @@ def split(path, file_name):
 
 def preprocess(string):
     # EMOJIS
-    string = re.sub(r":\)", "emojihappy1", string)
-    string = re.sub(r":P", "emojihappy2", string)
-    string = re.sub(r":p", "emojihappy3", string)
-    string = re.sub(r":>", "emojihappy4", string)
-    string = re.sub(r":3", "emojihappy5", string)
-    string = re.sub(r":D", "emojihappy6", string)
-    string = re.sub(r" XD ", "emojihappy7", string)
-    string = re.sub(r" <3 ", "emojihappy8", string)
+    string = re.sub(r":\)", "emojihappy", string)
+    string = re.sub(r":P", "emojihappy", string)
+    string = re.sub(r":p", "emojihappy", string)
+    string = re.sub(r":>", "emojihappy", string)
+    string = re.sub(r":3", "emojihappy", string)
+    string = re.sub(r":D", "emojihappy", string)
+    string = re.sub(r" XD ", "emojihappy", string)
+    string = re.sub(r" <3 ", "emojihappy", string)
 
-    string = re.sub(r":\(", "emojisad9", string)
-    string = re.sub(r":<", "emojisad10", string)
-    string = re.sub(r":<", "emojisad11", string)
-    string = re.sub(r">:\(", "emojisad12", string)
+    string = re.sub(r":\(", "emojisad", string)
+    string = re.sub(r":<", "emojisad", string)
+    string = re.sub(r":<", "emojisad", string)
+    string = re.sub(r">:\(", "emojisad", string)
 
     # MENTIONS "(@)\w+"
     string = re.sub(r"(@)\w+", "mentiontoken", string)
@@ -71,9 +72,9 @@ def preprocess(string):
     string = re.sub(r"\?", " \? ", string)
     string = re.sub(r"\s{2,}", " ", string)
 
-    stop_words = set(stopwords.words('english'))
-    for w in stop_words:
-        string = re.sub((" "+w+" "), " ", string)
+    # stop_words = set(stopwords.words('english'))
+    # for w in stop_words:
+    #     string = re.sub((" " + w + " "), " ", string)
 
     return string.strip().lower()
 
@@ -92,7 +93,7 @@ def tokenize(filename):
 
 
 def read_preprocessed(filename):
-    with open('../Data/'+filename+'.pkl', 'rb') as file:
+    with open('../Data/' + filename + '.pkl', 'rb') as file:
         return pickle.load(file)
 
 
@@ -111,6 +112,7 @@ def main():
 
     with open(bad_out, 'wb') as out:
         pickle.dump(bad_tweets, out, pickle.HIGHEST_PROTOCOL)
+
 
 if __name__ == '__main__':
     main()

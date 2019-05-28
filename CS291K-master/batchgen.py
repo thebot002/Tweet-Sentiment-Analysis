@@ -35,10 +35,10 @@ def separate_dataset(path, filename):
 
 # Load Dataset
 def get_dataset(goodfile, badfile, limit, randomize=True):
-    good_x = list(open(goodfile, "r", encoding="ISO-8859-1").readlines())
+    good_x = list(open(goodfile, "r").readlines())
     good_x = [s.strip() for s in good_x]
 
-    bad_x = list(open(badfile, "r", encoding="ISO-8859-1").readlines())
+    bad_x = list(open(badfile, "r").readlines())
     bad_x = [s.strip() for s in bad_x]
 
     if (randomize):
